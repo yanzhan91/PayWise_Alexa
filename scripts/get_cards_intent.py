@@ -43,6 +43,11 @@ def build_url(url, user_id, name, category):
 def generate_alexa_response(api_response, intent_name, name, category):
     if api_response.status_code == 200:
         results = api_response.json()
+        if not results:
+            speech = 'You have not saved any cards yet. '
+            reprompt_speech = 'To add a card, simply say add, followed by a card name such as chase freedom.'
+            return alexa_response.generate_alexa_response(speech + reprompt_speech, 'PlainText', intent_name, speech,
+                                                          'Simple', reprompt_speech, 'PlainText', False)
         speech = generate_speech(results)
         return alexa_response.generate_alexa_response(speech, 'SSML', intent_name, '', 'Simple')
     elif api_response.status_code == 400:
@@ -64,14 +69,11 @@ def generate_alexa_response(api_response, intent_name, name, category):
 
 def generate_speech(results):
     speech = '<speak>'
-    if not results:
-        speech = 'You do not have any cards saved.'
-    else:
-        del results[3:]
-        for card_info in results:
-            percentage = float(card_info['reward'])
-            percentage = str(Decimal(percentage).normalize())
-            speech += (card_info['card_name'] + ' will give you ' + percentage + " percent <break time='1s' />")
+    del results[3:]
+    for card_info in results:
+        percentage = float(card_info['reward'])
+        percentage = str(Decimal(percentage).normalize())
+        speech += (card_info['card_name'] + ' will give you ' + percentage + " percent <break time='1s' />")
     speech += '</speak>'
     return speech
 
