@@ -24,7 +24,7 @@ def get_api_response(user_id):
 def generate_alexa_response(status_code, cards, intent_name):
     if status_code == 200 and len(cards) != 0:
         speech = "<speak>You have " + str(len(cards)) + (' cards' if len(cards) > 0 else ' card') \
-                 + " cards added.<break time='2s' />"
+                 + " added.<break time='2s' />"
         for card in cards:
             speech += card + "<break time='1s' />"
         speech += "</speak>"
