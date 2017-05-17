@@ -1,8 +1,9 @@
-def generate_alexa_response(speech, speech_type, card_title, card_text, card_type='Simple'):
+def generate_alexa_response(speech, speech_type, card_title, card_text, card_type='Simple', reprompt_speech='',
+                            reprompt_type='PlainText', end_session=True):
     output_speech = generate_output_speech(speech, speech_type)
     card = generate_card(card_title, card_text, card_type)
-    reprompt = generate_reprompt(speech, speech_type)
-    return generate_response(card, output_speech, reprompt, True)
+    reprompt = generate_reprompt(reprompt_speech, reprompt_type)
+    return generate_response(card, output_speech, reprompt, end_session)
 
 
 def generate_internal_error_response():

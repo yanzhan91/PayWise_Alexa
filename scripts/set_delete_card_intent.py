@@ -1,6 +1,7 @@
 import os
 import requests
 import scripts.alexa_response as alexa_response
+import scripts.feedback_service as feedback_service
 
 
 def on_intent(event, intent_name, operation):
@@ -13,15 +14,14 @@ def on_intent(event, intent_name, operation):
     card_name = slots['Card']['value']
 
     # TODO Temporary Fix for Quicksilver and Quicksilver One issue
-    if card_name == 'capital 1 quicksilver 1':
-        card_name = 'capital one quicksilver one'
+    card_name = card_name.replace('1', 'one')
 
     response = get_api_response(user_id, card_name, operation)
     print(response.url)
     print(response.json())
 
     if response.status_code == 200:
-        card_name = response.json()
+        card_name = response.json()['card_name']
 
     return generate_alexa_response(response.status_code, card_name, intent_name, operation)
 
@@ -50,7 +50,9 @@ def generate_alexa_response(status_code, card_name, intent_name, operation):
             speech = card_name + ' has been deleted successfully'
         return alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
     elif status_code == 400:
-        speech = card_name + ' currently does not exist in our database.'
+        feedback_service.add_feedback('card', 'card', card_name)
+        speech = card_name + ' currently does not exist in our database. Check back later as we continuously add new' \
+                             'cards everyday'
         return alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
     else:
         return alexa_response.generate_internal_error_response()
@@ -65,7 +67,7 @@ if __name__ == "__main__":
                 'name': 'SetCardIntent',
                 'slots': {
                     'Card': {
-                        'value': 'Chase Fdom'
+                        'value': 'capital 1 quiz silver 1'
                     }
                 }
             }
@@ -76,4 +78,4 @@ if __name__ == "__main__":
             }
         }
     }
-    print(on_intent(mock_event, 'SetCardIntent', 'add'))
+    print(on_intent(mock_event, 'SetCardIntent', 'delete'))

@@ -1,6 +1,7 @@
 import os
 import requests
 import scripts.alexa_response as alexa_response
+import scripts.feedback_service as feedback_service
 from decimal import Decimal
 
 
@@ -14,17 +15,20 @@ def on_intent(event, intent_name):
 
     if 'Name' in slots:
         name = slots['Name']['value']
-    if 'Category' in slots:
+    elif 'Category' in slots:
         category = slots['Category']['value']
+    else:
+        speech = 'Please try again with a store name such as Amazon'
+        alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
 
     url = build_url(os.environ['get_rewards_url'], str(user_id), name, category)
     print(url)
 
-    api_response = get_api_response(url)
+    api_response = requests.get(url)
     print(api_response.status_code)
     print(api_response.json())
 
-    return generate_alexa_response(api_response, intent_name)
+    return generate_alexa_response(api_response, intent_name, name, category)
 
 
 def build_url(url, user_id, name, category):
@@ -36,8 +40,26 @@ def build_url(url, user_id, name, category):
     return url
 
 
-def get_api_response(url):
-    return requests.get(url)
+def generate_alexa_response(api_response, intent_name, name, category):
+    if api_response.status_code == 200:
+        results = api_response.json()
+        speech = generate_speech(results)
+        return alexa_response.generate_alexa_response(speech, 'SSML', intent_name, '', 'Simple')
+    elif api_response.status_code == 400:
+        if name:
+            user_input = name
+            feedback_service.add_feedback('store', 'store', user_input)
+        elif category:
+            user_input = category
+            feedback_service.add_feedback('category', 'category', user_input)
+        else:
+            return alexa_response.generate_internal_error_response()
+
+        speech = user_input + ' currently does not exist in our database. Check back later as we continuously add ' \
+                              'new ones everyday'
+        return alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
+    else:
+        return alexa_response.generate_internal_error_response()
 
 
 def generate_speech(results):
@@ -53,28 +75,6 @@ def generate_speech(results):
     speech += '</speak>'
     return speech
 
-
-def generate_alexa_response(api_response, intent_name):
-    if api_response.status_code == 200:
-        return get_response_for_200(api_response, intent_name)
-    elif api_response.status_code == 400:
-        return get_response_for_400()
-    else:
-        return get_response_for_500()
-
-
-def get_response_for_200(api_response, intent_name):
-    results = api_response.json()
-    speech = generate_speech(results)
-    return alexa_response.generate_alexa_response(speech, 'SSML', intent_name, '', 'Simple')
-
-
-def get_response_for_400():
-    return alexa_response.generate_alexa_response('')
-
-
-def get_response_for_500():
-    return alexa_response.generate_internal_error_response()
 
 if __name__ == "__main__":
 
