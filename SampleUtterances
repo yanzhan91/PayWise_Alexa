@@ -1,0 +1,8 @@
+AMAZON.CancelIntent cancel
+AMAZON.HelpIntent help
+AMAZON.StopIntent stop
+GetRewardsIntent {category}
+SetCardIntent add {card}
+DeleteCardIntent delete {card}
+DeleteCardIntent remove {card}
+MyCardsIntent my cards

@@ -1,0 +1,43 @@
+{
+  "intents": [
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "category",
+          "type": "Category"
+        }
+      ],
+      "intent": "GetRewardsIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "card",
+          "type": "Card"
+        }
+      ],
+      "intent": "SetCardIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "card",
+          "type": "Card"
+        }
+      ],
+      "intent": "DeleteCardIntent"
+    },
+    {
+      "intent": "MyCardsIntent"
+    }
+  ]
+}
