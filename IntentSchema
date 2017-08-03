@@ -38,6 +38,9 @@
     },
     {
       "intent": "MyCardsIntent"
+    },
+    {
+      "intent": "AllCategoriesIntent"
     }
   ]
 }

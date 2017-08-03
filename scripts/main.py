@@ -2,6 +2,7 @@ import scripts.get_rewards_intent as get_rewards_intent
 import scripts.set_delete_card_intent as set_delete_card_intent
 import scripts.my_cards_intent as my_cards_intent
 import scripts.alexa_response as alexa_response
+import scripts.get_categories as get_categories
 
 
 def handler(event, context):
@@ -23,6 +24,8 @@ def start_request(event):
         return set_delete_card_intent.on_intent(event, intent_name, 'delete')
     elif intent_name == 'MyCardsIntent':
         return my_cards_intent.on_intent(event, intent_name)
+    elif intent_name == 'AllCategoriesIntent':
+        return get_categories.on_intent(event, intent_name)
     elif intent_name == 'AMAZON.CancelIntent' or intent_name == 'AMAZON.StopIntent':
         return handle_empty_response()
     elif intent_name == 'AMAZON.HelpIntent':

@@ -6,3 +6,4 @@ SetCardIntent add {card}
 DeleteCardIntent delete {card}
 DeleteCardIntent remove {card}
 MyCardsIntent my cards
+AllCategoriesIntent categories
