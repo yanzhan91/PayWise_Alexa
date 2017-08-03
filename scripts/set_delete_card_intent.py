@@ -8,10 +8,10 @@ def on_intent(event, intent_name, operation):
     user_id = event['session']['user']['userId']
     slots = event['request']['intent']['slots']
 
-    if 'Card' not in slots or 'value' not in slots['Card']:
+    if 'card' not in slots or 'value' not in slots['card']:
         return generate_alexa_response(400, None, None, None)
 
-    card_name = slots['Card']['value']
+    card_name = slots['card']['value']
 
     # TODO Temporary Fix for Quicksilver and Quicksilver One issue
     card_name = card_name.replace('1', 'one')
@@ -66,7 +66,7 @@ if __name__ == "__main__":
             'intent': {
                 'name': 'SetCardIntent',
                 'slots': {
-                    'Card': {
+                    'card': {
                         'value': 'capital 1 quiz silver 1'
                     }
                 }

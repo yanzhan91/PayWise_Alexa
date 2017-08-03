@@ -11,7 +11,7 @@ def on_intent(event, intent_name):
     if 'Card' not in slots or 'value' not in slots['Card']:
         return generate_alexa_response(400, None, None)
 
-    card_name = slots['Card']['value']
+    card_name = slots['card']['value']
 
     response = get_api_response(user_id, card_name)
     print(response.url)

@@ -15,8 +15,8 @@ def on_intent(event, intent_name):
 
     if 'Name' in slots:
         name = slots['Name']['value']
-    elif 'Category' in slots:
-        category = slots['Category']['value']
+    elif 'category' in slots:
+        category = slots['category']['value']
     else:
         speech = 'Please try again with a store name such as Amazon'
         alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
