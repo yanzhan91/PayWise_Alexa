@@ -18,7 +18,7 @@ def on_intent(event, intent_name):
     elif 'category' in slots:
         category = slots['category']['value']
     else:
-        speech = 'Please try again with a store name such as Amazon'
+        speech = 'Please try again with a category such as restaurants'
         alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
 
     url = build_url(os.environ['get_rewards_url'], str(user_id), name, category)
