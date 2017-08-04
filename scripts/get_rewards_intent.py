@@ -49,8 +49,8 @@ def generate_alexa_response(api_response, intent_name, name, category):
             reprompt_speech = 'To add a card, simply say add, followed by a card name such as chase freedom.'
             return alexa_response.generate_alexa_response(speech + reprompt_speech, 'PlainText', intent_name, speech,
                                                           'Simple', reprompt_speech, 'PlainText', False)
-        speech = generate_speech(results)
-        return alexa_response.generate_alexa_response(speech, 'SSML', intent_name, '', 'Simple')
+        speech, card_text = generate_speech(results, category)
+        return alexa_response.generate_alexa_response(speech, 'SSML', intent_name, card_text, 'Simple')
     elif api_response.status_code == 400:
         if name:
             user_input = name
@@ -68,20 +68,23 @@ def generate_alexa_response(api_response, intent_name, name, category):
         return alexa_response.generate_internal_error_response()
 
 
-def generate_speech(results):
+def generate_speech(results, category):
     speech = '<speak>'
+    card_text = category + '\n'
     del results[3:]
     for card_info in results:
         percentage = float(card_info['reward'])
         percentage = str(Decimal(percentage).normalize())
         speech += (card_info['card_name'] + ' will give you ' + percentage + " percent <break time='1s' />")
+        card_text += (card_info['card_name'] + ' - ' + percentage + '%')
     speech += '</speak>'
-    return speech
+    return speech, card_text
 
 
 if __name__ == "__main__":
-
-    os.environ['get_rewards_url'] = 'https://m8n05huk4i.execute-api.us-east-1.amazonaws.com/dev/rewards'
+    os.environ['base_url'] = 'https://m8n05huk4i.execute-api.us-east-1.amazonaws.com/'
+    os.environ['env'] = 'dev'
+    os.environ['get_rewards_url'] = '/rewards'
     mock_event = {
         'request': {
             'intent': {
