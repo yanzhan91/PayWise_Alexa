@@ -17,15 +17,15 @@ def start_request(event):
         return handle_help_response()
     intent_name = event['request']['intent']['name']
     if intent_name == 'GetRewardsIntent':
-        return get_rewards_intent.on_intent(event, intent_name)
+        return get_rewards_intent.on_intent(event, 'Rewards')
     elif intent_name == 'SetCardIntent':
-        return set_delete_card_intent.on_intent(event, intent_name, 'add')
+        return set_delete_card_intent.on_intent(event, 'Add Card', 'add')
     elif intent_name == 'DeleteCardIntent':
-        return set_delete_card_intent.on_intent(event, intent_name, 'delete')
+        return set_delete_card_intent.on_intent(event, 'Delete Card', 'delete')
     elif intent_name == 'MyCardsIntent':
-        return my_cards_intent.on_intent(event, intent_name)
+        return my_cards_intent.on_intent(event, 'My Cards')
     elif intent_name == 'AllCategoriesIntent':
-        return get_categories.on_intent(event, intent_name)
+        return get_categories.on_intent(event, 'All Categories')
     elif intent_name == 'AMAZON.CancelIntent' or intent_name == 'AMAZON.StopIntent':
         return handle_empty_response()
     elif intent_name == 'AMAZON.HelpIntent':
