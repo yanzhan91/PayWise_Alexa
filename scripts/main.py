@@ -14,7 +14,7 @@ def handler(event, context):
 
 def start_request(event):
     if 'intent' not in event['request']:
-        return handle_empty_response()
+        return handle_help_response()
     intent_name = event['request']['intent']['name']
     if intent_name == 'GetRewardsIntent':
         return get_rewards_intent.on_intent(event, intent_name)
@@ -46,5 +46,6 @@ def handle_empty_response():
 def handle_help_response():
     speech = 'Welcome to Pay Wise. A service to help you maximize your credit card rewards. ' \
              'To start, add your credit cards by simply saying add, followed by the card name. For example, add ' \
-             'Chase Freedom. Then you can ask me the name of the store such as Amazon.'
+             'Chase Freedom. Then you can ask me about a category. To find our current list of categories, ' \
+             'simply say, all categories'
     return alexa_response.generate_alexa_response(speech, 'PlainText', 'PayWise Help', speech, end_session=False)

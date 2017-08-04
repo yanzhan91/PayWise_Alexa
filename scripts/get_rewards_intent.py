@@ -84,10 +84,10 @@ if __name__ == "__main__":
     mock_event = {
         'request': {
             'intent': {
-                'name': 'GetCardsIntent',
+                'name': 'GetRewardsIntent',
                 'slots': {
-                    'Name': {
-                        'value': 'sdfsdf'
+                    'category': {
+                        'value': 'movie'
                     }
                 }
             }

@@ -5,7 +5,7 @@ GetRewardsIntent {category}
 SetCardIntent add {card}
 DeleteCardIntent delete {card}
 DeleteCardIntent remove {card}
-MyCardsIntent my cards
+MyCardsIntent for my cards
 AllCategoriesIntent category
 AllCategoriesIntent categories
 AllCategoriesIntent all categories
