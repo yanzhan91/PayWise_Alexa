@@ -27,7 +27,7 @@ def on_intent(event, intent_name, operation):
 
 
 def get_api_response(user_id, card_name, operation):
-    url = os.environ['user_card_url']
+    url = os.environ['base_url'] + os.environ['env'] + os.environ['user_card_url']
 
     if operation == 'add':
         return requests.post(url, json={

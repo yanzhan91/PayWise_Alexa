@@ -21,7 +21,7 @@ def on_intent(event, intent_name):
         speech = 'Please try again with a category such as restaurants'
         alexa_response.generate_alexa_response(speech, 'PlainText', intent_name, speech, 'Simple')
 
-    url = build_url(os.environ['get_rewards_url'], str(user_id), name, category)
+    url = build_url(str(user_id), name, category)
     print(url)
 
     api_response = requests.get(url)
@@ -31,8 +31,9 @@ def on_intent(event, intent_name):
     return generate_alexa_response(api_response, intent_name, name, category)
 
 
-def build_url(url, user_id, name, category):
-    url = url + '?device=Alexa&user_id=' + user_id
+def build_url(user_id, name, category):
+    url = os.environ['base_url'] + os.environ['env'] + os.environ['get_rewards_url'] \
+          + '?device=Alexa&user_id=' + user_id
     if name is not None:
         url = url + '&name=' + name.replace(' ', '%20')
     if category is not None:

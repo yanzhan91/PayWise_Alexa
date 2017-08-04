@@ -16,7 +16,7 @@ def on_intent(event, intent_name):
 
 
 def get_api_response():
-    url = os.environ['get_categories_url']
+    url = os.environ['base_url'] + os.environ['env'] + os.environ['get_categories_url']
     return requests.get(url)
 
 

@@ -17,7 +17,7 @@ def on_intent(event, intent_name):
 
 
 def get_api_response(user_id):
-    url = os.environ['get_user_cards_url'] + '?user_id=' + user_id
+    url = os.environ['base_url'] + os.environ['env'] + os.environ['get_user_cards_url'] + '?user_id=' + user_id
     return requests.get(url)
 
 
