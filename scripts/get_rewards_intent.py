@@ -70,13 +70,13 @@ def generate_alexa_response(api_response, intent_name, name, category):
 
 def generate_speech(results, category):
     speech = '<speak>'
-    card_text = category + '\n'
+    card_text = category.upper() + '\n'
     del results[3:]
     for card_info in results:
         percentage = float(card_info['reward'])
         percentage = str(Decimal(percentage).normalize())
         speech += (card_info['card_name'] + ' will give you ' + percentage + " percent <break time='1s' />")
-        card_text += (card_info['card_name'] + ' - ' + percentage + '%')
+        card_text += (card_info['card_name'] + ' - ' + percentage + '%\n')
     speech += '</speak>'
     return speech, card_text
 
